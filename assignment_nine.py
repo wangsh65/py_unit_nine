@@ -1,17 +1,18 @@
-
-#https://gist.github.com/JenkinsDev/1e4bff898c72ec55df6f
-#https://chat.openai.com/c/97a28349-28dc-46db-bd07-f49f264d65bc
+# name : Shelly.W
+# date : 1/21/2024
+# purpose : to make a compare  nums card game
+# link : https://gist.github.com/JenkinsDev/1e4bff898c72ec55df6f
+#link: https://chat.openai.com/c/97a28349-28dc-46db-bd07-f49f264d65bc
 
 import random
 class Deck:
 
-    def __init__(self):
-        # Initialize a standard deck of cards
-
-        self.suits = ['Hearts', 'Spades', 'Diamonds', 'Clubs']
+    def __init__(self):                                                  
+        self.suits = ['Clubs','Diamonds','Hearts','Spades']                                                     # Initialize a standard deck of cards
         self.values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 
         self.deck = [{'suit': suit, 'value': value} for suit in self.suits for value in self.values]
+        self.players = {}
 
     def shuffle_deck(self):
         # Fisher-Yates shuffle algorithm
@@ -48,14 +49,27 @@ class Deck:
         else:
             return suits_order.index(card1['suit']) - suits_order.index(card2['suit'])
 
+
+
 def is_integer(user_input):
     try:
-        # Try to convert the user input to an integer
+                                                                            # Try to convert the user input to an integer
         int_value = int(user_input)
         return True
     except ValueError:
         # If conversion fails, it's not an integer
         return False
+
+def print_card(card):
+    if card["suit"] == "Clubs":
+        return str(card["value"]) + "♣️"
+    if card["suit"] == "Diamonds":
+        return str(card["value"]) + "♦️"
+    if card["suit"] == "Spades":
+        return str(card["value"]) + "♠️"
+    if card["suit"] == "Hearts":
+        return str(card["value"]) + "♥️"
+
 def main():
 
 
@@ -78,39 +92,48 @@ def main():
 
     player1_hand = deck.deal_cards(ask_user)
     player2_hand = deck.deal_cards(ask_user)
-    print("player1 hand cards:", player1_hand)
-    print("player2 hand cards:", player2_hand)
+    # print("player1 hand cards:", player1_hand)
+    print("Player 1 Hand:", end=" ")
+    for card in player1_hand:
+        print(print_card(card), end=" ")
+    print("")
+    print("Player 2 Hand:", end=" ")
+    for card in player2_hand:
+        print(print_card(card), end=" ")
+    print("")
+    print("")
+
+    player1_wins = 0
+    player2_wins = 0
 
     for i in range(ask_user):
         print("Round " + str(i+1))
         card1 = player1_hand[i]
         card2 = player2_hand[i]
-        print(card1)
-        print(card2)
+        print("Player 1:", end=" ")
+        print(print_card(card1))
+        print("Player 2:", end=" ")
+        print(print_card(card2))
         play = deck.compare_card(card1,card2)
+
         if play > 0:
-            print("player1 wins")
-            print()
+            print("Player 1 wins this round!")
+            player1_wins = player1_wins + 1
         else:
-            print("player2 wins")
+            print("Player 2 wins this round!")
+            player2_wins = player2_wins + 1
         print("")
 
-        print("Game over!")
+    print("Game over!")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    print("player 1 wins:", player1_wins, "rounds")
+    print("player 2 wins:", player2_wins, "rounds")
+    if player1_wins > player2_wins:
+        print("Player 1 wins the game!")
+    if player2_wins > player1_wins:
+        print("Player 2 wins the game!")
+    if player1_wins == player2_wins:
+        print("It is a tie!")
 
 
 
